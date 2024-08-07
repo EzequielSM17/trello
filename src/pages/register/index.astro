@@ -1,0 +1,109 @@
+---
+import Layout from "../../layouts/Layout.astro";
+const errors = { email: "", password: "" };
+import.meta.env.TRELLO_BFF_URL;
+if (Astro.request.method === "POST") {
+  try {
+    const formData = await Astro.request.formData();
+    const password = formData.get("password");
+    const passwordVerify = formData.get("verify-password");
+    if (typeof password !== "string" || password.length < 6) {
+      errors.password += "Password must be at least 8 characters. ";
+    } else if (password !== passwordVerify) {
+      errors.password += "Las contraseñas no coinciden";
+    }
+    const hasErrors = Object.values(errors).some((msg) => msg);
+    if (!hasErrors) {
+      const response = await fetch(
+        import.meta.env.TRELLO_BFF_URL + "auth/users/",
+        {
+          method: "POST",
+          body: JSON.stringify({
+            email: formData.get("email"),
+            password: formData.get("password"),
+          }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        return Astro.redirect("/login");
+      }
+      const data = await response.json();
+      errors.password += data?.password[0];
+      errors.email += data?.email[0];
+    }
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error(error.message);
+    }
+  }
+}
+---
+
+<Layout title="U-trello"
+  ><main class="w-full h-screen flex justify-center items-center bg-gray-950">
+    <section
+      class="bg-white bg-opacity-35 h-[600px] w-2/5 rounded-xl flex border border-gray-300"
+    >
+      <article
+        class="w-1/2 bg-pink-600 rounded-s-xl text-white flex flex-col justify-center items-center"
+      >
+        <h3 class="text-2xl font-bold">¿Tiene ya una cuenta?</h3>
+        <p class="text-lg font-normal my-5">Inicie sesion dandole al boton</p>
+        <a
+          href="/login"
+          class="text-lg border border-white p-3 rounded-lg hover:scale-95 transition-all hover:bg-white hover:bg-opacity-15"
+          >Iniciar sesión
+        </a>
+      </article>
+      <article class="w-1/2 bg-gray-800 rounded-e-xl h-full p-4 text-white">
+        <form
+          method="POST"
+          class="flex flex-col justify-center items-center text-lg h-full"
+        >
+          <h1 class="my-5 w-full text-center text-2xl font-bold">
+            Crear cuenta
+          </h1>
+          <label class="flex flex-col my-3">
+            <span class="">Correo electrónico</span>
+            <input
+              type="email"
+              name="email"
+              required
+              class="h-12 w-80 rounded-lg shadow bg-gray-300 bg-opacity-30 px-2 focus:bg-opacity-40 transition-all cursor-text"
+            />
+          </label>
+          {errors.email && <p>{errors.email}</p>}
+          <label class="flex flex-col my-3">
+            <span>Contraseña</span>
+            <input
+              type="password"
+              name="password"
+              required
+              minlength="8"
+              class="h-12 w-80 rounded-lg bg-gray-300 bg-opacity-30 px-2 focus:bg-opacity-40 transition-all cursor-text"
+            />
+          </label>
+          <label class="flex flex-col my-3">
+            <span>Confirma contraseña</span>
+            <input
+              type="password"
+              name="verify-password"
+              required
+              minlength="8"
+              class="h-12 w-80 rounded-lg bg-gray-300 bg-opacity-30 px-2 focus:bg-opacity-40 transition-all cursor-text"
+            />
+          </label>
+          {errors.password && <p>{errors.password}</p>}
+          <button
+            class="border border-gray-400 p-3 rounded-lg my-10 hover:scale-95 transition-all hover:bg-white hover:bg-opacity-15"
+            >Registrarme</button
+          >
+        </form>
+      </article>
+    </section>
+  </main></Layout
+>
