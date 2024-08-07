@@ -1,0 +1,58 @@
+---
+import Input from "../../components/ui/forms/Input.astro";
+import Notification from "../../components/ui/Notification";
+
+import FormsLayaout from "../../layouts/FormsLayaout.astro";
+import { getToDoStates } from "../../utils/api";
+const data = await getToDoStates();
+const types = data.data;
+---
+
+<FormsLayaout title="U-Trello">
+  <slot name="notification">
+    {
+      data.notification.type && (
+        <Notification
+          type={data.notification.type}
+          text={data.notification.text}
+        />
+      )
+    }
+  </slot>
+
+  <div class="w-full h-auto p-4 flex flex-col justify-center items-center">
+    <form
+      action=""
+      method="post"
+      class="border border-gray-600 p-5 rounded-lg bg-gray-800 w-[48rem] flex justify-center gap-4 flex-wrap"
+    >
+      <Input
+        type="text"
+        name="title"
+        label="Título"
+        required={true}
+        minLength=""
+        maxLength=""
+        className=""
+      />
+      <Input
+        type="text"
+        name="description"
+        label="Descripción"
+        required={true}
+        minLength=""
+        maxLength=""
+        className=""
+      />
+      <Input
+        type="date"
+        name="deaddline"
+        label="Fecha de entrega"
+        required={true}
+        minLength=""
+        maxLength=""
+        className=""
+      />
+    </form>
+  </div>
+</FormsLayaout>

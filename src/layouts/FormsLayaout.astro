@@ -1,0 +1,21 @@
+---
+import Header from "../components/Header.astro";
+import Navbar from "../components/Navbar.astro";
+import Layout from "./Layout.astro";
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<Layout title={title}>
+  <Header />
+  <main
+    class="flex flex-wrap max-w-full min-h-screen flex-row bg-gray-950 text-white overflow-hidden"
+  >
+    <slot name="notification" />
+    <Navbar />
+    <div class="grow pt-20 pl-20"><slot /></div>
+  </main>
+</Layout>

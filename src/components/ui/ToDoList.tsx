@@ -77,7 +77,7 @@ function ToDoList({ state }: { state: ToDoState }) {
       )}
 
       <a
-        href="/"
+        href="/create-todo"
         className="w-full h-32 rounded-xl border border-dashed border-gray-500 p-4 my-4 cursor-pointer overflow-hidden items-center justify-center  flex hover:scale-95 transition-all self-end"
       >
         <h4 className="text-xl font-bold my-3">Nueva tarea +</h4>

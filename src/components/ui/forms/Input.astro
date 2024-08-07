@@ -1,0 +1,35 @@
+---
+interface Props {
+  type:
+    | "text"
+    | "email"
+    | "number"
+    | "password"
+    | "url"
+    | "tel"
+    | "search"
+    | "date";
+  name: string;
+  label: string;
+  required: boolean | null;
+  minLength: string | null;
+  maxLength: string | null;
+  className: string;
+}
+const { type, name, label, required, minLength, maxLength, className } =
+  Astro.props;
+---
+
+<label class="flex flex-col my-3">
+  <span class="">{label}</span>
+  <input
+    type={type}
+    name={name}
+    required={required}
+    minlength={minLength}
+    maxlength={maxLength}
+    class={className
+      ? className
+      : "h-12 w-80 rounded-lg shadow bg-gray-300 bg-opacity-30 px-2 focus:bg-opacity-40 transition-all cursor-text"}
+  />
+</label>
