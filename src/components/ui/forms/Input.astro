@@ -15,21 +15,23 @@ interface Props {
   minLength: string | null;
   maxLength: string | null;
   className: string;
+  value: string | null;
 }
-const { type, name, label, required, minLength, maxLength, className } =
+const { type, name, label, required, minLength, maxLength, className, value } =
   Astro.props;
 ---
 
 <label class="flex flex-col my-3">
-  <span class="">{label}</span>
+  <span class="font-bold text-lg">{label}</span>
   <input
     type={type}
     name={name}
+    value={value}
     required={required}
     minlength={minLength}
     maxlength={maxLength}
     class={className
       ? className
-      : "h-12 w-80 rounded-lg shadow bg-gray-300 bg-opacity-30 px-2 focus:bg-opacity-40 transition-all cursor-text"}
+      : "h-12 w-80 rounded-lg shadow bg-gray-300 bg-opacity-30 px-2 focus:bg-opacity-40 transition-all cursor-text text-lg"}
   />
 </label>

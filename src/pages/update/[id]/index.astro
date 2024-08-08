@@ -1,22 +1,31 @@
 ---
-import Input from "../../components/ui/forms/Input.astro";
-import Select from "../../components/ui/forms/Select.tsx";
-import TextArea from "../../components/ui/forms/TextArea.astro";
-import Notification from "../../components/ui/Notification";
-import { NOTIFICATIONS_TYPES } from "../../const";
+import Input from "../../../components/ui/forms/Input.astro";
+import Select from "../../../components/ui/forms/Select.tsx";
+import TextArea from "../../../components/ui/forms/TextArea.astro";
+import Notification from "../../../components/ui/Notification";
+import { NOTIFICATIONS_TYPES } from "../../../const";
 
-import FormsLayaout from "../../layouts/FormsLayaout.astro";
-import { createToDo } from "../../utils/api";
-import { getToDoStates, getToDoTypes } from "../../utils/api";
+import FormsLayaout from "../../../layouts/FormsLayaout.astro";
+import { getToDoById, updateToDo } from "../../../utils/api";
+import { getToDoStates, getToDoTypes } from "../../../utils/api";
+const { id } = Astro.params;
+let notification;
+const token = Astro.cookies.get("trello_bff_token")?.value;
 const dataStates = await getToDoStates();
 const dataTypes = await getToDoTypes();
+
+const dataTodo = await getToDoById(id, token);
+
+const todo = dataTodo.data;
 const states = dataStates.data;
 const types = dataTypes.data;
-let notification;
+
 if (dataTypes.notification.text) {
   notification = dataTypes.notification;
 } else if (dataStates.notification.text) {
   notification = dataStates.notification;
+} else if (dataTodo.notification.text) {
+  notification = dataTodo.notification;
 }
 if (Astro.request.method === "POST") {
   try {
@@ -28,10 +37,12 @@ if (Astro.request.method === "POST") {
       type: formData.get("type"),
       deadline: formData.get("deadline"),
     };
+    if (id) {
+      const data = await updateToDo(id, body, token);
+      notification = data.notification;
+    }
 
-    const token = Astro.cookies.get("trello_bff_token")?.value;
-    notification = await createToDo(body, token);
-    if (notification.type === NOTIFICATIONS_TYPES.success)
+    if (notification?.type === NOTIFICATIONS_TYPES.success)
       return Astro.redirect("/");
   } catch (error) {
     if (error instanceof Error) {
@@ -39,6 +50,7 @@ if (Astro.request.method === "POST") {
     }
   }
 }
+console.log(todo);
 ---
 
 <FormsLayaout title="U-Trello">
@@ -57,7 +69,7 @@ if (Astro.request.method === "POST") {
       class="border border-gray-600 p-5 rounded-lg bg-gray-800 w-[48rem] flex justify-center gap-4 flex-wrap h-full"
     >
       <h1 class="w-full text-center text-3xl font-bold py-10 underline">
-        Create to do
+        Update to do
       </h1>
       <Input
         type="text"
@@ -67,6 +79,7 @@ if (Astro.request.method === "POST") {
         minLength="4"
         maxLength=""
         className=""
+        value={todo?.title}
       />
 
       <Input
@@ -77,6 +90,7 @@ if (Astro.request.method === "POST") {
         minLength=""
         maxLength=""
         className=""
+        value={todo?.deadline}
       />
 
       <Select
@@ -86,6 +100,7 @@ if (Astro.request.method === "POST") {
         multiple={false}
         id={"state"}
         name={"state"}
+        value={todo?.state}
       />
       <Select
         options={types}
@@ -94,6 +109,7 @@ if (Astro.request.method === "POST") {
         multiple={false}
         id={"type"}
         name={"type"}
+        value={todo?.type}
       />
       <TextArea
         name="description"
@@ -102,6 +118,7 @@ if (Astro.request.method === "POST") {
         minLength="6"
         maxLength="200"
         className=""
+        value={todo?.description}
       />
 
       <button

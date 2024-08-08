@@ -23,12 +23,10 @@ function ToDoList({ state }: { state: ToDoState }) {
   const onDrop = useCallback(
     async (event: DragEvent) => {
       event.preventDefault();
-      console.log("drop");
-      console.log({ state });
       const id = event.dataTransfer.getData("text");
       const moveToDo = toDos.find((todo) => parseInt(id) === todo.id);
       if (!moveToDo) {
-        await updateToDo(id, state.id);
+        await updateToDo(id, { state: state.id }, null);
         await getToDos(state.id.toString(), setToDos);
         setDragClass("bg-gray-800");
       }
@@ -52,18 +50,19 @@ function ToDoList({ state }: { state: ToDoState }) {
 
   async function resetList(event: any) {
     setTimeout(() => getToDos(state.id.toString(), setToDos), 50);
-    console.log("end");
-    console.log({ state });
+    setDragClass("bg-gray-800");
   }
   return (
     <section
-      className={"w-1/4 flex flex-wrap py-10 rounded-xl p-4 " + dragClass}
+      className={
+        "w-1/4 flex flex-col py-10 rounded-xl p-4 align-top h-full " + dragClass
+      }
       onDrop={onDrop}
       onDragEnter={onDragEnter}
       onDragLeave={onDragLeave}
       onDragOver={onDragOver}
     >
-      <h1 className="text-center w-full font-semibold text-xl mb-8">
+      <h1 className="text-center w-full font-semibold text-xl mb-8 ">
         {state.name}
       </h1>
 

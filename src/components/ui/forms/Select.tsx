@@ -5,6 +5,7 @@ function Select({
   required,
   name,
   id,
+  value,
 }: {
   options: any;
   label: string;
@@ -12,20 +13,19 @@ function Select({
   required: boolean;
   name: string;
   id: string;
+  value: string | "";
 }) {
   const onMouseDown = (event: any) => {
     event.preventDefault();
     event.target.selected = !event.target.selected;
   };
   return (
-    <label
-      htmlFor={name}
-      className="font-bold flex flex-col gap-3 items-center my-5"
-    >
-      <span className="text-lg">{label}</span>
+    <label htmlFor={name} className="font-bold flex flex-col gap-3 my-5">
+      <span className="font-bold text-lg">{label}</span>
       <select
         name={name}
         id={id}
+        defaultValue={value}
         multiple={multiple}
         required={required}
         className="scroll bg-white bg-opacity-20 border  rounded-lg overflow-y-scroll px-2 focus:bg-opacity-10 w-80 h-12  items-center"

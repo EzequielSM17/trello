@@ -2,10 +2,11 @@ interface ToDo {
   title: string;
   description: string;
   img: string | null;
-  id: number;
+  id: number | null;
   state: number;
-  date: string;
-  people: string[];
+  type: number;
+  deadline: string;
+  people: string[] | null;
 }
 
 interface ToDoState {
@@ -20,10 +21,4 @@ interface User {
 interface MyNotification {
   type: string;
   text: string;
-}
-
-type TodoAction = { type: "UPDATE_TODO"; payload: number };
-interface ToDoContext {
-  toDo: ToDo | null;
-  updateToDo: (id: number) => void;
 }

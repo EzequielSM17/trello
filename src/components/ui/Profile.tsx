@@ -11,7 +11,7 @@ function Profile() {
   });
   const onClick = () => {
     if (!user.id) {
-      window.location.href = window.location.href + "login/";
+      window.location.href = window.location.origin + "/login/";
     }
   };
 
@@ -42,7 +42,7 @@ function Profile() {
         {user.id && (
           <div className="absolute h-10 w-10 opacity-0 hover:opacity-100 hover:pt-12 hover:min-w-44 hover:right-4 hover:h-auto transition-all z-10 ">
             <ul className="flex flex-col bg-gray-800 border border-gray-600 rounded-lg w-full overflow-hidden">
-              <li className="">
+              <li className="overflow-hidden">
                 <button
                   onClick={onClickLogOutButton}
                   className="m-3 text-red-600 font-bold flex flex-row gap-2 overflow-hidden"
