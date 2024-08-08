@@ -95,7 +95,41 @@ export async function getToDoStates() {
       data: null,
       notification: {
         type: NOTIFICATIONS_TYPES.danger,
-        text: "No se ha podido traer las tareas, inténtalo mas tarde",
+        text: "No se ha podido traer los estados de las tareas, inténtalo mas tarde",
+        error: response.status,
+      },
+    };
+  } catch (error) {
+    return {
+      data: null,
+      notification: {
+        type: NOTIFICATIONS_TYPES.danger,
+        text: "Ha sucedido un problema inesperado, inténtalo mas tarde",
+        error: error,
+      },
+    };
+  }
+}
+export async function getToDoTypes() {
+  try {
+    const response = await fetch("http://127.0.0.1:8000/api/todos/todo_types/");
+
+    if (response.ok) {
+      const data = await response.json();
+      return {
+        data: data,
+        notification: {
+          type: "",
+          text: "",
+          error: null,
+        },
+      };
+    }
+    return {
+      data: null,
+      notification: {
+        type: NOTIFICATIONS_TYPES.danger,
+        text: "No se ha podido traer los tipo de prioridad, inténtalo mas tarde",
         error: response.status,
       },
     };

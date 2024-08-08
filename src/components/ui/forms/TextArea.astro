@@ -1,0 +1,26 @@
+---
+interface Props {
+  name: string;
+  label: string;
+  required: boolean | null;
+  minLength: string | null;
+  maxLength: string | null;
+  className: string;
+}
+const { name, label, required, minLength, maxLength, className } = Astro.props;
+---
+
+<label class="flex flex-col my-3 w-2/3">
+  <span class="mb-2">{label}</span>
+  <textarea
+    name={name}
+    required={required}
+    minlength={minLength}
+    maxlength={maxLength}
+    rows="4"
+    cols="25"
+    class={className
+      ? className
+      : " rounded-lg shadow bg-gray-300 bg-opacity-30 p-2 focus:bg-opacity-40 transition-all cursor-text text-wrap "}
+  ></textarea>
+</label>

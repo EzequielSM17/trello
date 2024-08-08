@@ -1,21 +1,39 @@
 ---
 import Input from "../../components/ui/forms/Input.astro";
+import Select from "../../components/ui/forms/Select.tsx";
+import TextArea from "../../components/ui/forms/TextArea.astro";
 import Notification from "../../components/ui/Notification";
 
 import FormsLayaout from "../../layouts/FormsLayaout.astro";
-import { getToDoStates } from "../../utils/api";
-const data = await getToDoStates();
-const types = data.data;
+import { getToDoStates, getToDoTypes } from "../../utils/api";
+const dataStates = await getToDoStates();
+const dataTypes = await getToDoTypes();
+const states = dataStates.data;
+const types = dataTypes.data;
+let notification;
+if (dataTypes.notification.text) {
+  notification = dataTypes.notification;
+} else if (dataStates.notification.text) {
+  notification = dataTypes.notification;
+}
+if (Astro.request.method === "POST") {
+  try {
+    const formData = await Astro.request.formData();
+    console.log(formData);
+    //return Astro.redirect("/");
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error(error.message);
+    }
+  }
+}
 ---
 
 <FormsLayaout title="U-Trello">
   <slot name="notification">
     {
-      data.notification.type && (
-        <Notification
-          type={data.notification.type}
-          text={data.notification.text}
-        />
+      notification?.type && (
+        <Notification type={notification.type} text={notification.text} />
       )
     }
   </slot>
@@ -26,6 +44,7 @@ const types = data.data;
       method="post"
       class="border border-gray-600 p-5 rounded-lg bg-gray-800 w-[48rem] flex justify-center gap-4 flex-wrap"
     >
+      <h1 class="w-full text-center text-3xl font-bold py-10">Create to do</h1>
       <Input
         type="text"
         name="title"
@@ -35,15 +54,7 @@ const types = data.data;
         maxLength=""
         className=""
       />
-      <Input
-        type="text"
-        name="description"
-        label="Descripción"
-        required={true}
-        minLength=""
-        maxLength=""
-        className=""
-      />
+
       <Input
         type="date"
         name="deaddline"
@@ -53,6 +64,36 @@ const types = data.data;
         maxLength=""
         className=""
       />
+
+      <Select
+        options={states}
+        required={true}
+        label="Estado de las tareas"
+        multiple={false}
+        id={"state"}
+        name={"state"}
+      />
+      <Select
+        options={types}
+        required={true}
+        label="Tipo de tarea"
+        multiple={false}
+        id={"type"}
+        name={"type"}
+      />
+      <TextArea
+        name="description"
+        label="Descripción"
+        required={true}
+        minLength="6"
+        maxLength="200"
+        className=""
+      />
+
+      <button
+        class="border border-gray-600 p-4 text-xl font-bold w-full mt-14 mb-5 rounded-xl bg-gray-900 hover:scale-95 transition-all"
+        >Create</button
+      >
     </form>
   </div>
 </FormsLayaout>
