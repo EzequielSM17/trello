@@ -250,8 +250,7 @@ export async function createToDo(body: any, token: string | undefined) {
       },
       body: JSON.stringify(body),
     });
-    const data = await response.json();
-    console.log(data);
+
     if (response.ok) {
       return {
         type: NOTIFICATIONS_TYPES.success,

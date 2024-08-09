@@ -20,6 +20,7 @@ function Profile() {
     setNotificacion(notificacion);
     if (notificacion.type === NOTIFICATIONS_TYPES.success) {
       setUser({ email: "", id: null });
+      window.location.href = window.location.origin;
     }
     setTimeout(() => {
       setNotificacion({

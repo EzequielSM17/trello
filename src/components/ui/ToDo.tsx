@@ -1,6 +1,8 @@
+import { useState } from "react";
 import { deleteToDo } from "../../utils/api";
 
 function ToDo({ todo, resetList }: { todo: any; resetList: Function }) {
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
   function onDragStart(event: any) {
     event.dataTransfer.setData("text/plain", event.target.id);
   }
@@ -24,10 +26,34 @@ function ToDo({ todo, resetList }: { todo: any; resetList: Function }) {
       <div className="flex justify-between items-center w-full">
         <h4 className="text-xl font-bold my-3">{todo.title}</h4>
         <div className="flex flex-row items-center gap-3">
+          {openDeleteModal && (
+            <div className="absolute flex flex-col w-80 border h-32 bg-gray-700 rounded-xl p-2 text-lg z-20">
+              <p className="mb-2">
+                ¿Estas seguro que quieres{" "}
+                <span className="text-red-600 font-bold">eliminar</span> esta
+                tarea <span className="font-bold">"{todo.title}"</span> ?
+              </p>
+              <div className="flex justify-between">
+                <button
+                  className="text-green-500 w-16 border rounded-lg px-4 py-2 font-bold "
+                  onClick={onDelete}
+                >
+                  Sí
+                </button>
+                <button
+                  className="text-red-600 w-16  border rounded-lg px-4 py-2 font-bold"
+                  onClick={() => setOpenDeleteModal(false)}
+                >
+                  No
+                </button>
+              </div>
+            </div>
+          )}
+
           <a href={"/update/" + todo.id.toString()}>
             <img src="/edit.svg" className=""></img>
           </a>
-          <button className="w-8 h-8" onClick={onDelete}>
+          <button className="w-8 h-8" onClick={() => setOpenDeleteModal(true)}>
             <img src="/trash.svg" className=""></img>
           </button>
         </div>

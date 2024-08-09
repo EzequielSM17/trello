@@ -2,7 +2,7 @@
 interface Props {
   name: string;
   label: string;
-  required: boolean | null;
+  required: boolean | null | undefined;
   minLength: string | null;
   maxLength: string | null;
   className: string;
@@ -10,7 +10,6 @@ interface Props {
 }
 const { name, label, required, minLength, maxLength, className, value } =
   Astro.props;
-console.log(value);
 ---
 
 <label class="flex flex-col my-3 w-2/3">

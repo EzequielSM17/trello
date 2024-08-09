@@ -1,7 +1,7 @@
 ---
 import Input from "../../../components/ui/forms/Input.astro";
 import Select from "../../../components/ui/forms/Select.tsx";
-import TextArea from "../../../components/ui/forms/TextArea.astro";
+import TextArea from "../../../components/ui/forms/TextArea.tsx";
 import Notification from "../../../components/ui/Notification";
 import { NOTIFICATIONS_TYPES } from "../../../const";
 
@@ -50,7 +50,6 @@ if (Astro.request.method === "POST") {
     }
   }
 }
-console.log(todo);
 ---
 
 <FormsLayaout title="U-Trello">
@@ -115,8 +114,8 @@ console.log(todo);
         name="description"
         label="Descripción"
         required={true}
-        minLength="6"
-        maxLength="200"
+        minLength={6}
+        maxLength={200}
         className=""
         value={todo?.description}
       />

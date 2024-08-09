@@ -67,6 +67,7 @@ if (Astro.request.method === "POST") {
         minLength="4"
         maxLength=""
         className=""
+        value=""
       />
 
       <Input
@@ -77,6 +78,7 @@ if (Astro.request.method === "POST") {
         minLength=""
         maxLength=""
         className=""
+        value=""
       />
 
       <Select
@@ -86,6 +88,7 @@ if (Astro.request.method === "POST") {
         multiple={false}
         id={"state"}
         name={"state"}
+        value=""
       />
       <Select
         options={types}
@@ -94,6 +97,7 @@ if (Astro.request.method === "POST") {
         multiple={false}
         id={"type"}
         name={"type"}
+        value=""
       />
       <TextArea
         name="description"
@@ -102,6 +106,7 @@ if (Astro.request.method === "POST") {
         minLength="6"
         maxLength="200"
         className=""
+        value=""
       />
 
       <button
