@@ -62,9 +62,9 @@ function ToDo({ todo, resetList }: { todo: any; resetList: Function }) {
       <p className="text-ellipsis overflow-hidden h-auto text-lg min-h-16 mt-2">
         {todo.description}
       </p>
-      <div className="flex justify-between items-center mt-7 w-full">
+      <div className="flex justify-between items-center mt-7 w-full text-sm xl:text-md">
         <div>
-          <span className="border border-white rounded-2xl p-1 px-4 font-bold mr-4">
+          <span className="border border-white rounded-2xl p-1 px-4 font-bold mr-4 text-sm">
             {todo?.deadline}
           </span>
           <span

@@ -370,3 +370,102 @@ export async function getToDoById(
     };
   }
 }
+
+export async function getFriends(token: string) {
+  try {
+    const response = await fetch("http://127.0.0.1:8000/api/friends/", {
+      credentials: "include",
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      return {
+        data: data,
+        notification: {
+          type: "",
+          text: "",
+          error: null,
+        },
+      };
+    }
+    return {
+      data: null,
+      notification: {
+        type: NOTIFICATIONS_TYPES.danger,
+        text: "No se ha podido encontrar tu amigos, inténtalo mas tarde",
+        error: response.status,
+      },
+    };
+  } catch (error) {
+    return {
+      data: null,
+      notification: {
+        type: NOTIFICATIONS_TYPES.danger,
+        text: "Ha sucedido un problema inesperado, inténtalo mas tarde",
+        error: error,
+      },
+    };
+  }
+}
+
+export async function searchFriends(
+  token: string,
+  search: string | "",
+  page: string | undefined
+) {
+  try {
+    let authHeader;
+    if (token) {
+      authHeader = {
+        Authorization: "Bearer " + token,
+      };
+    } else {
+      authHeader = await getAuthHeader();
+    }
+    const params = new URLSearchParams({
+      email: search,
+      page: page ? page : "",
+    }).toString();
+    const response = await fetch(
+      "http://127.0.0.1:8000/api/add_friends/?" + params,
+      {
+        credentials: "include",
+        headers: {
+          ...authHeader,
+        },
+      }
+    );
+
+    if (response.ok) {
+      const data = await response.json();
+      return {
+        data: data,
+        notification: {
+          type: "",
+          text: "",
+          error: null,
+        },
+      };
+    }
+    return {
+      data: null,
+      notification: {
+        type: NOTIFICATIONS_TYPES.danger,
+        text: "No se ha podido encontrar tu amigos, inténtalo mas tarde",
+        error: response.status,
+      },
+    };
+  } catch (error) {
+    return {
+      data: null,
+      notification: {
+        type: NOTIFICATIONS_TYPES.danger,
+        text: "Ha sucedido un problema inesperado, inténtalo mas tarde",
+        error: error,
+      },
+    };
+  }
+}

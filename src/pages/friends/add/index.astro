@@ -1,0 +1,83 @@
+---
+import { NOTIFICATIONS_TYPES } from "../../../const";
+import FormsLayaout from "../../../layouts/FormsLayaout.astro";
+import { searchFriends } from "../../../utils/api";
+import Notification from "../../../components/ui/Notification";
+import Pagination from "../../../components/ui/Pagination";
+import Card from "../../../components/ui/Card.astro";
+
+const token = Astro.cookies.get("trello_bff_token")?.value;
+let data: any = {
+  data: null,
+  notification: {
+    type: NOTIFICATIONS_TYPES.danger,
+    text: "Ha sucedido un problema inesperado, inténtalo mas tarde",
+    error: "",
+  },
+};
+if (token) {
+  if (Astro.request.method === "POST") {
+    const formData = await Astro.request.formData();
+    const search = formData.get("search");
+    if (search) {
+      data = await searchFriends(token, search.toString(), "");
+    } else {
+      data = await searchFriends(token, "", "");
+    }
+  } else {
+    data = await searchFriends(token, "", "");
+  }
+}
+async function updateData(page: string | "") {
+  data = await searchFriends("", "", page);
+}
+---
+
+<FormsLayaout title="U-Trello">
+  <slot name="notification">
+    {
+      data.notification.type && (
+        <Notification
+          type={data.notification.type}
+          text={data.notification.text}
+        />
+      )
+    }
+  </slot>
+
+  <div class="w-full h-auto p-4 flex justify-center gap-4">
+    <div
+      class="w-[49.5rem] min-h-[56rem] p-4 flex flex-wrap gap-4 bg-gray-800 border border-gray-600 rounded-xl"
+    >
+      <form class="w-full flex justify-center items-center" method="POST">
+        <input
+          type="search"
+          name="search"
+          id="search"
+          class="w-96 h-10 bg-gray-900 px-2 rounded-s-md"
+          placeholder="Search"
+        />
+        <button class="h-10 bg-gray-900 rounded-e-md border-l border-gray-800"
+          ><img src="/search.svg" alt="Buscar" class="px-2" /></button
+        >
+      </form>
+      {
+        data?.data?.results.map((friend: any) => {
+          return (
+            <Card src="" title={friend.email}>
+              <div slot="buttons" class="w-full flex justify-end p-1">
+                <button class="border-b-2 border-green-600 pb-1">
+                  <img src="/users-plus.svg" alt="Icono agregar usuario" />
+                </button>
+              </div>
+            </Card>
+          );
+        })
+      }
+      <Pagination
+        hrefNext={data?.data.next}
+        hrefPrevious={data?.data.previous}
+      />
+    </div>
+  </div>
+</FormsLayaout>

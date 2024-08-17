@@ -55,7 +55,8 @@ function ToDoList({ state }: { state: ToDoState }) {
   return (
     <section
       className={
-        "w-1/4 flex flex-col py-10 rounded-xl p-4 align-top h-full " + dragClass
+        " min-w-96 w-1/4 flex flex-col py-10 rounded-xl p-4 align-top h-full " +
+        dragClass
       }
       onDrop={onDrop}
       onDragEnter={onDragEnter}

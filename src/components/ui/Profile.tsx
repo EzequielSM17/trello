@@ -34,7 +34,7 @@ function Profile() {
     GetAuthMeData(setUser);
   }, [setUser, GetAuthMeData]);
   return (
-    <div className="mx-5 flex flex-row gap-3 items-center ">
+    <div className="mx-5 flex flex-row gap-3 items-center overflow-hidden ">
       {notificacion.type && (
         <Notification type={notificacion.type} text={notificacion.text} />
       )}

@@ -28,7 +28,7 @@ if (Astro.request.method === "POST") {
         }
       );
 
-      if (response.status === 200) {
+      if (response.ok) {
         return Astro.redirect("/login");
       }
       const data = await response.json();
@@ -46,10 +46,10 @@ if (Astro.request.method === "POST") {
 <Layout title="U-trello"
   ><main class="w-full h-screen flex justify-center items-center bg-gray-950">
     <section
-      class="bg-white bg-opacity-35 h-[600px] w-2/5 rounded-xl flex border border-gray-300"
+      class="overflow-y-scroll lg:overflow-y-hidden bg-white bg-opacity-35 h-full w-full lg:h-[600px] lg:w-auto lg:rounded-xl flex flex-col lg:flex-row lg:border border-gray-300"
     >
       <article
-        class="w-1/2 bg-pink-600 rounded-s-xl text-white flex flex-col justify-center items-center"
+        class="lg:w-96 w-full h-full bg-pink-600 lg:rounded-s-xl text-white flex flex-col justify-center items-center"
       >
         <h3 class="text-2xl font-bold">¿Tiene ya una cuenta?</h3>
         <p class="text-lg font-normal my-5">Inicie sesion dandole al boton</p>
@@ -59,7 +59,9 @@ if (Astro.request.method === "POST") {
           >Iniciar sesión
         </a>
       </article>
-      <article class="w-1/2 bg-gray-800 rounded-e-xl h-full p-4 text-white">
+      <article
+        class="lg:w-96 w-full bg-gray-800 lg:rounded-e-xl h-full p-4 text-white"
+      >
         <form
           method="POST"
           class="flex flex-col justify-center items-center text-lg h-full"
@@ -73,10 +75,10 @@ if (Astro.request.method === "POST") {
               type="email"
               name="email"
               required
-              class="h-12 w-80 rounded-lg shadow bg-gray-300 bg-opacity-30 px-2 focus:bg-opacity-40 transition-all cursor-text"
+              class="h-12 sm:w-80 w-72 rounded-lg shadow bg-gray-300 bg-opacity-30 px-2 focus:bg-opacity-40 transition-all cursor-text"
             />
           </label>
-          {errors.email && <p>{errors.email}</p>}
+          {errors.email && <p class="font-bold text-red-600">{errors.email}</p>}
           <label class="flex flex-col my-3">
             <span>Contraseña</span>
             <input
@@ -84,7 +86,7 @@ if (Astro.request.method === "POST") {
               name="password"
               required
               minlength="8"
-              class="h-12 w-80 rounded-lg bg-gray-300 bg-opacity-30 px-2 focus:bg-opacity-40 transition-all cursor-text"
+              class="h-12 sm:w-80 w-72 rounded-lg shadow bg-gray-300 bg-opacity-30 px-2 focus:bg-opacity-40 transition-all cursor-text"
             />
           </label>
           <label class="flex flex-col my-3">
@@ -94,10 +96,14 @@ if (Astro.request.method === "POST") {
               name="verify-password"
               required
               minlength="8"
-              class="h-12 w-80 rounded-lg bg-gray-300 bg-opacity-30 px-2 focus:bg-opacity-40 transition-all cursor-text"
+              class="h-12 sm:w-80 w-72 rounded-lg shadow bg-gray-300 bg-opacity-30 px-2 focus:bg-opacity-40 transition-all cursor-text"
             />
           </label>
-          {errors.password && <p>{errors.password}</p>}
+          {
+            errors.password && (
+              <p class="font-bold text-red-600">{errors.password}</p>
+            )
+          }
           <button
             class="border border-gray-400 p-3 rounded-lg my-10 hover:scale-95 transition-all hover:bg-white hover:bg-opacity-15"
             >Registrarme</button

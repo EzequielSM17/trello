@@ -3,15 +3,41 @@
 ---
 
 <nav
-  class="fixed hover:w-60 w-16 transition-all h-svh border-r border-gray-600 bg-gray-800 pt-28"
+  class="fixed hover:w-60 lg:w-[3.8rem] transition-all h-svh border-r border-gray-600 bg-gray-800 pt-28 w-0"
 >
-  <ul class="w-full text-white overflow-hidde p-3">
+  <ul class="w-full text-white overflow-hidde p-3 font-bold">
     <li class="flex flex-row overflow-hidden truncate">
       <a
-        href={"/create-todo"}
-        class="flex flex-row overflow-hidden truncate gap-4 items-center w-full border border-white rounded-full p-1 min-h-9 min-w-9"
+        href="/"
+        class="flex flex-row overflow-hidden truncate gap-4 items-center w-full p-1 min-h-9 min-w-9"
       >
-        <img src="/plus.svg" class="" /><span>Crear Todo</span></a
+        <img src="/checklist.svg" /><span class="text-lg">Tareas</span></a
+      >
+    </li>
+    <hr class="mb-4 mt-2 border-green-500" />
+    <li class="flex flex-row overflow-hidden truncate">
+      <a
+        href="/create-todo"
+        class="flex flex-row overflow-hidden truncate gap-4 items-center w-full border border-green-500 rounded-full p-1 min-h-9 min-w-9"
+      >
+        <img src="/plus.svg" /><span>Crear Todo</span></a
+      >
+    </li>
+    <li class="flex flex-row overflow-hidden truncate mt-10">
+      <a
+        href="/friends"
+        class="flex flex-row overflow-hidden truncate gap-4 items-center w-full p-1 min-h-9 min-w-9"
+      >
+        <img src="/friends.svg" /><span class="text-lg">Amigos</span></a
+      >
+    </li>
+    <hr class="mb-4 mt-2 border-blue-600" />
+    <li class="flex flex-row overflow-hidden truncate">
+      <a
+        href="/friends/add"
+        class="flex flex-row overflow-hidden truncate gap-4 items-center w-full border border-blue-600 rounded-full p-1 min-h-9 min-w-8"
+      >
+        <img src="/plus.svg" class="" /><span>Añadir amigo</span></a
       >
     </li>
   </ul>

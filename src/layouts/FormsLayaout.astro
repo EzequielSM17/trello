@@ -12,10 +12,10 @@ const { title } = Astro.props;
 <Layout title={title}>
   <Header />
   <main
-    class="flex flex-wrap max-w-full min-h-screen flex-row bg-gray-950 text-white overflow-hidden"
+    class="flex flex-wrap max-w-full min-h-screen flex-row bg-gray-950 text-white overflow-scroll xl:overflow-hidden"
   >
     <slot name="notification" />
     <Navbar />
-    <div class="grow pt-20 pl-20"><slot /></div>
+    <div class="grow pt-20 sm:pl-2 lg:pl-16"><slot /></div>
   </main>
 </Layout>
